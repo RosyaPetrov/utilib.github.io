@@ -1,95 +1,83 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Загрузка контента
-    loadContent('home');
+// Конфигурация (замените на свои данные)
+const GITHUB_USER = 'ваш_логин';
+const REPO_NAME = 'ваш_репозиторий';
+const TOKEN = 'ваш_github_token'; // Создайте в Settings > Developer settings > Personal access tokens
+
+let chatIssueNumber = null;
+
+async function initChat() {
+    // 1. Создаем issue для чата (если еще нет)
+    const issues = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/issues?labels=chat`)
+        .then(r => r.json());
     
-    // Переключение темы
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeLabel = document.querySelector('.theme-label');
-    
-    function applyTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        if (themeLabel) themeLabel.textContent = theme.toUpperCase();
-        if (themeToggle) themeToggle.checked = theme === 'light';
+    if (issues.length === 0) {
+        const newIssue = await createGitHubIssue('Общий чат', 'Чат создан автоматически', ['chat']);
+        chatIssueNumber = newIssue.number;
+    } else {
+        chatIssueNumber = issues[0].number;
     }
     
-    // Инициализация темы
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
+    // 2. Загружаем сообщения
+    loadMessages();
     
-    if (themeToggle) {
-        themeToggle.addEventListener('change', function() {
-            applyTheme(this.checked ? 'light' : 'dark');
-        });
-    }
+    // 3. Настраиваем отправку
+    document.getElementById('send-btn').addEventListener('click', sendMessage);
+    document.getElementById('message-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+}
+
+async function createGitHubIssue(title, body, labels) {
+    const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/issues`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `token ${TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title, body, labels })
+    });
+    return await response.json();
+}
+
+async function loadMessages() {
+    const comments = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/issues/${chatIssueNumber}/comments`)
+        .then(r => r.json());
     
-    // Навигация между страницами
-    document.querySelectorAll('.terminal-nav .retro-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const page = this.getAttribute('data-page');
-            loadContent(page);
-            
-            // Обновляем активную кнопку
-            document.querySelectorAll('.terminal-nav .retro-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
+    const chat = document.getElementById('chat-messages');
+    chat.innerHTML = '';
+    
+    comments.forEach(comment => {
+        const message = document.createElement('div');
+        message.className = 'chat-message';
+        message.innerHTML = `
+            <strong>${comment.user.login}:</strong>
+            <span>${comment.body}</span>
+            <small>${new Date(comment.created_at).toLocaleString()}</small>
+        `;
+        chat.appendChild(message);
     });
     
-    // Функция загрузки контента
-    async function loadContent(page) {
-        try {
-            const response = await fetch(`data/content.json`);
-            const data = await response.json();
-            
-            let content = '';
-            if (page === 'home') {
-                content = data.home;
-            } else if (page === 'chat') {
-                content = await fetch('chat.html').then(r => r.text());
-                initChat();
-            } else {
-                content = data[page] || `<h2>${page}</h2><p>Страница в разработке</p>`;
-            }
-            
-            document.getElementById('content-area').innerHTML = content;
-        } catch (error) {
-            console.error('Ошибка загрузки контента:', error);
-        }
-    }
+    chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendMessage() {
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
     
-    // Инициализация чата
-    function initChat() {
-        const messageInput = document.getElementById('message-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatMessages = document.getElementById('chat-messages');
+    if (message && chatIssueNumber) {
+        await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/issues/${chatIssueNumber}/comments`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `token ${TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ body: message })
+        });
         
-        if (sendBtn && messageInput) {
-            sendBtn.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') sendMessage();
-            });
-        }
-        
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement('div');
-                messageElement.className = 'chat-message';
-                messageElement.textContent = `> ${message}`;
-                chatMessages.appendChild(messageElement);
-                messageInput.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Сохраняем сообщение (можно заменить на запрос к серверу)
-                saveMessage(message);
-            }
-        }
-        
-        function saveMessage(message) {
-            // Здесь можно добавить сохранение в localStorage или отправку на сервер
-            console.log('Сообщение сохранено:', message);
-        }
+        input.value = '';
+        loadMessages();
     }
-});
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', initChat);
