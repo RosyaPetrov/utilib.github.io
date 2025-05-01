@@ -5,22 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utilib++</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="icond.png" type="png">
+    <link rel="icon" href="images/logo-dark.png" id="favicon">
 </head>
 <body>
     <div class="crt-effect">
+        <!-- Переключатель темы вверху -->
+        <div class="theme-switch-container retro-border">
+            <div class="container">
+                <label class="retro-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="theme-label">ТЕМНАЯ ТЕМА</span>
+            </div>
+        </div>
+
         <header class="retro-border">
             <div class="container">
                 <div class="header-top">
-                    <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
-                    <div class="theme-switch">
-                        <label class="retro-switch">
-                            <input type="checkbox" id="theme-toggle">
-                            <span class="slider"></span>
-                        </label>
-                        <span class="theme-label">DARK</span>
+                    <!-- Аватар сайта с изменяемой темой -->
+                    <img src="images/logo-dark.png" alt="Utilib++" id="site-logo" class="site-logo">
+                    <div>
+                        <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
+                        <p class="retro-subtitle">// C++ Utility Library</p>
                     </div>
                 </div>
+                
                 <nav class="terminal-nav">
                     <button class="retro-btn active" data-page="home">Главная</button>
                     <button class="retro-btn" data-page="chat">Чат</button>
@@ -30,16 +40,213 @@
         </header>
 
         <main class="container" id="content-area">
-            <!-- Контент будет загружаться динамически -->
+            <!-- Главная страница -->
+            <section id="home-content" class="tab-content active">
+                <div class="retro-border">
+                    <h2 class="retro-heading">> О ПРОЕКТЕ</h2>
+                    <div class="retro-box">
+                        <p>Utilib++ - современная библиотека для C++ разработчиков, предоставляющая:</p>
+                        <ul class="retro-list">
+                            <li>Утилиты для работы со строками</li>
+                            <li>Улучшенные контейнеры</li>
+                            <li>Параллельные алгоритмы</li>
+                        </ul>
+                        <button class="retro-btn install-btn">Установить</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Чат -->
+            <section id="chat-content" class="tab-content">
+                <div class="retro-border">
+                    <h2 class="retro-heading">> ОБЩИЙ ЧАТ</h2>
+                    <div class="chat-container">
+                        <div id="chat-messages" class="chat-messages"></div>
+                        <div class="chat-input">
+                            <input type="text" id="message-input" class="retro-input" placeholder="Введите сообщение...">
+                            <button id="send-btn" class="retro-btn">Отправить</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Документация -->
+            <section id="docs-content" class="tab-content">
+                <div class="retro-border">
+                    <h2 class="retro-heading">> ДОКУМЕНТАЦИЯ</h2>
+                    <div class="retro-box">
+                        <p>Документация доступна на GitHub:</p>
+                        <a href="https://github.com/yourusername/Utilib/wiki" class="retro-link">Перейти к документации</a>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer class="retro-border">
             <div class="container">
-                <p class="retro-text">© 2023 Utilib Project | <img src="icond.png" alt="icon" class="footer-icon"></p>
+                <p class="retro-text">© 2023 Utilib Project | <img src="images/logo-dark.png" alt="logo" class="footer-logo"></p>
             </div>
         </footer>
     </div>
 
-    <script src="js/script.js"></script>
+    <!-- Модальное окно установки -->
+    <div class="modal" id="install-modal">
+        <div class="modal-content retro-border">
+            <span class="close-btn">&times;</span>
+            <h2 class="retro-heading">> УСТАНОВКА</h2>
+            <div class="retro-box">
+                <h3 class="retro-highlight">CMake:</h3>
+                <pre><code class="language-bash">git clone https://github.com/yourusername/Utilib.git
+cd Utilib
+mkdir build && cd build
+cmake ..
+make install</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация
+        const CONFIG = {
+            GITHUB_USER: 'yourusername',
+            REPO_NAME: 'Utilib',
+            CHAT_LABEL: 'global-chat'
+        };
+
+        // Состояние приложения
+        const state = {
+            currentTheme: 'dark',
+            chatIssueNumber: null
+        };
+
+        // DOM элементы
+        const elements = {
+            themeToggle: document.getElementById('theme-toggle'),
+            themeLabel: document.querySelector('.theme-label'),
+            favicon: document.getElementById('favicon'),
+            siteLogo: document.getElementById('site-logo'),
+            contentArea: document.getElementById('content-area'),
+            navButtons: document.querySelectorAll('.terminal-nav .retro-btn'),
+            modal: document.getElementById('install-modal')
+        };
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            initNavigation();
+            initModal();
+            if (location.hash === '#chat') {
+                loadPage('chat');
+            }
+        });
+
+        // ========== ТЕМА ==========
+        function initTheme() {
+            // Загружаем сохраненную тему
+            state.currentTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(state.currentTheme);
+            elements.themeToggle.checked = state.currentTheme === 'light';
+
+            // Обработчик переключения
+            elements.themeToggle.addEventListener('change', function() {
+                state.currentTheme = this.checked ? 'light' : 'dark';
+                applyTheme(state.currentTheme);
+            });
+        }
+
+        function applyTheme(theme) {
+            // Применяем тему ко всему документу
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+
+            // Обновляем текст переключателя
+            elements.themeLabel.textContent = theme === 'dark' ? 'ТЕМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
+
+            // Меняем изображения
+            const suffix = theme === 'dark' ? 'dark' : 'light';
+            elements.favicon.href = `images/logo-${suffix}.png`;
+            elements.siteLogo.src = `images/logo-${suffix}.png`;
+            document.querySelector('.footer-logo').src = `images/logo-${suffix}.png`;
+        }
+
+        // ========== НАВИГАЦИЯ ==========
+        function initNavigation() {
+            elements.navButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = this.getAttribute('data-page');
+                    loadPage(page);
+                    
+                    // Обновляем активную кнопку
+                    elements.navButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function loadPage(page) {
+            // Скрываем все страницы
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Показываем выбранную
+            document.getElementById(`${page}-content`).style.display = 'block';
+            
+            // Инициализируем чат если нужно
+            if (page === 'chat') initChat();
+        }
+
+        // ========== ЧАТ ==========
+        async function initChat() {
+            try {
+                // Создаем или находим issue для чата
+                const issues = await fetch(
+                    `https://api.github.com/repos/${CONFIG.GITHUB_USER}/${CONFIG.REPO_NAME}/issues?labels=${CONFIG.CHAT_LABEL}`
+                ).then(r => r.json());
+                
+                state.chatIssueNumber = issues.length > 0 
+                    ? issues[0].number 
+                    : await createChatIssue();
+                
+                // Загружаем сообщения
+                await loadMessages();
+                
+                // Настраиваем отправку
+                document.getElementById('send-btn').addEventListener('click', sendMessage);
+                document.getElementById('message-input').addEventListener('keypress', e => {
+                    if (e.key === 'Enter') sendMessage();
+                });
+            } catch (error) {
+                console.error('Ошибка инициализации чата:', error);
+                showChatError();
+            }
+        }
+
+        // ... (остальные функции чата)
+
+        // ========== МОДАЛЬНОЕ ОКНО ==========
+        function initModal() {
+            const installBtn = document.querySelector('.install-btn');
+            const closeBtn = document.querySelector('.close-btn');
+            
+            if (installBtn) {
+                installBtn.addEventListener('click', () => {
+                    elements.modal.style.display = 'block';
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    elements.modal.style.display = 'none';
+                });
+            }
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === elements.modal) {
+                    elements.modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
