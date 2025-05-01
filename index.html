@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя C++ Библиотека</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: #0056b3;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        h1 {
+            margin: 0;
+        }
+        .badge {
+            background: #e0e0e0;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .features {
+            margin: 20px 0;
+        }
+        .feature {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #0056b3;
+            border-radius: 3px;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MyCppLib</h1>
+        <p>Мощная и простая в использовании библиотека для C++</p>
+    </header>
+
+    <section>
+        <h2>О библиотеке</h2>
+        <p>
+            <strong>MyCppLib</strong> — это современная C++ библиотека, предназначенная для упрощения работы с 
+            [укажите назначение, например: "сетевым программированием, обработкой данных, алгоритмами и т.д."].
+        </p>
+        
+        <div class="badges">
+            <span class="badge">C++17</span>
+            <span class="badge">MIT License</span>
+            <span class="badge">Header-only</span>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Основные возможности</h2>
+        
+        <div class="feature">
+            <h3>Простота использования</h3>
+            <p>Чистый и понятный API, следущий принципам современного C++.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>Высокая производительность</h3>
+            <p>Оптимизированные алгоритмы и минимальные накладные расходы.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>Кроссплатформенность</h3>
+            <p>Работает на Windows, Linux и macOS.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Быстрый старт</h2>
+        <p>Добавьте библиотеку в свой проект:</p>
+        
+        <h3>CMake</h3>
+        <pre><code>find_package(MyCppLib REQUIRED)
+target_link_libraries(your_target PRIVATE MyCppLib::MyCppLib)</code></pre>
+        
+        <h3>Вручную</h3>
+        <pre><code>#include "mycpplib/mylib.hpp"</code></pre>
+    </section>
+
+    <section>
+        <h2>Пример кода</h2>
+        <pre><code>#include &lt;iostream&gt;
+#include "mycpplib/mylib.hpp"
+
+int main() {
+    mylib::Processor processor;
+    
+    auto result = processor.compute(42);
+    std::cout << "Результат: " << result << std::endl;
+    
+    return 0;
+}</code></pre>
+    </section>
+
+    <section>
+        <h2>Установка</h2>
+        <p>Инструкции по установке:</p>
+        <pre><code>git clone https://github.com/ваш-username/mycpplib.git
+cd mycpplib
+mkdir build && cd build
+cmake ..
+make
+sudo make install</code></pre>
+    </section>
+
+    <footer>
+        <p>© 2023 MyCppLib Project. Лицензия MIT.</p>
+        <p>
+            <a href="https://github.com/ваш-username/mycpplib">GitHub</a> | 
+            <a href="docs/index.html">Документация</a> | 
+            <a href="examples.html">Примеры</a>
+        </p>
+    </footer>
+</body>
+</html>
