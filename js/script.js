@@ -1,133 +1,95 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация подсветки синтаксиса
-    if (typeof hljs !== 'undefined') {
-        hljs.highlightAll();
-    }
-
-    // ========== Переключение темы ==========
+    // Загрузка контента
+    loadContent('home');
+    
+    // Переключение темы
     const themeToggle = document.getElementById('theme-toggle');
     const themeLabel = document.querySelector('.theme-label');
     
-    // Проверяем сохраненную тему или используем темную по умолчанию
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    themeToggle.checked = savedTheme === 'light';
-    themeLabel.textContent = savedTheme.toUpperCase();
-    
-    themeToggle.addEventListener('change', function() {
-        const theme = this.checked ? 'light' : 'dark';
+    function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
-        themeLabel.textContent = theme.toUpperCase();
         localStorage.setItem('theme', theme);
-    });
-
-    // ========== Табы навигации ==========
-    function switchTab(tabId) {
-        // Скрываем все табы
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        
-        // Убираем активные состояния у кнопок
-        document.querySelectorAll('.terminal-nav .retro-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Показываем выбранный таб
-        const activeTab = document.getElementById(tabId);
-        if (activeTab) {
-            activeTab.classList.add('active');
-        }
-        
-        // Активируем соответствующую кнопку
-        const activeBtn = document.querySelector(`.terminal-nav .retro-btn[data-tab="${tabId}"]`);
-        if (activeBtn) {
-            activeBtn.classList.add('active');
-        }
+        if (themeLabel) themeLabel.textContent = theme.toUpperCase();
+        if (themeToggle) themeToggle.checked = theme === 'light';
     }
-
-    // Вешаем обработчики на кнопки табов
-    document.querySelectorAll('.terminal-nav .retro-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const tabId = this.getAttribute('data-tab');
-            switchTab(tabId);
-        });
-    });
-
-    // ========== Вкладки примеров кода ==========
-    function switchExample(exampleType) {
-        // Скрываем все примеры
-        document.querySelectorAll('.example-content').forEach(content => {
-            content.style.display = 'none';
-        });
-        
-        // Убираем активные состояния у кнопок
-        document.querySelectorAll('.retro-tabs .retro-tab-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Показываем выбранный пример
-        const activeExample = document.getElementById(`${exampleType}-example`);
-        if (activeExample) {
-            activeExample.style.display = 'block';
-        }
-        
-        // Активируем соответствующую кнопку
-        const activeTabBtn = document.querySelector(`.retro-tabs .retro-tab-btn[data-example="${exampleType}"]`);
-        if (activeTabBtn) {
-            activeTabBtn.classList.add('active');
-        }
-    }
-
-    // Вешаем обработчики на кнопки примеров
-    document.querySelectorAll('.retro-tabs .retro-tab-btn').forEach(tab => {
-        tab.addEventListener('click', function() {
-            const exampleType = this.getAttribute('data-example');
-            switchExample(exampleType);
-        });
-    });
-
-    // ========== Модальное окно ==========
-    const modal = document.getElementById('install-modal');
-    const installBtn = document.querySelector('.install-btn');
-    const closeBtn = document.querySelector('.close-btn');
     
-    if (installBtn && modal && closeBtn) {
-        installBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            modal.style.display = 'block';
+    // Инициализация темы
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+            applyTheme(this.checked ? 'light' : 'dark');
         });
-        
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
+    }
+    
+    // Навигация между страницами
+    document.querySelectorAll('.terminal-nav .retro-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            loadContent(page);
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.terminal-nav .retro-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
         });
-        
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+    });
+    
+    // Функция загрузки контента
+    async function loadContent(page) {
+        try {
+            const response = await fetch(`data/content.json`);
+            const data = await response.json();
+            
+            let content = '';
+            if (page === 'home') {
+                content = data.home;
+            } else if (page === 'chat') {
+                content = await fetch('chat.html').then(r => r.text());
+                initChat();
+            } else {
+                content = data[page] || `<h2>${page}</h2><p>Страница в разработке</p>`;
             }
-        });
-    }
-
-    // ========== Раскрывающиеся блоки ==========
-    document.querySelectorAll('.retro-box-grid .retro-box').forEach(box => {
-        box.addEventListener('click', function() {
-            this.classList.toggle('expanded');
-        });
-    });
-
-    // ========== Инициализация начального состояния ==========
-    // Активируем первую вкладку
-    const defaultTab = document.querySelector('.terminal-nav .retro-btn[data-tab]');
-    if (defaultTab) {
-        const defaultTabId = defaultTab.getAttribute('data-tab');
-        switchTab(defaultTabId);
+            
+            document.getElementById('content-area').innerHTML = content;
+        } catch (error) {
+            console.error('Ошибка загрузки контента:', error);
+        }
     }
     
-    // Активируем первый пример кода
-    const defaultExample = document.querySelector('.retro-tabs .retro-tab-btn[data-example]');
-    if (defaultExample) {
-        const defaultExampleType = defaultExample.getAttribute('data-example');
-        switchExample(defaultExampleType);
+    // Инициализация чата
+    function initChat() {
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        
+        if (sendBtn && messageInput) {
+            sendBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+        
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'chat-message';
+                messageElement.textContent = `> ${message}`;
+                chatMessages.appendChild(messageElement);
+                messageInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Сохраняем сообщение (можно заменить на запрос к серверу)
+                saveMessage(message);
+            }
+        }
+        
+        function saveMessage(message) {
+            // Здесь можно добавить сохранение в localStorage или отправку на сервер
+            console.log('Сообщение сохранено:', message);
+        }
     }
 });
