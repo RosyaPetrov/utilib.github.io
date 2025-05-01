@@ -381,3 +381,23 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
 }
+/* Стили для ссылок */
+.retro-link {
+    color: #00ff00; /* Ярко-зелёный */
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.retro-link:hover {
+    color: #00cc00; /* Темнее при наведении */
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+[data-theme="light"] .retro-link {
+    color: #009900; /* Зелёный для светлой темы */
+}
+
+[data-theme="light"] .retro-link:hover {
+    color: #00bb00;
+}
