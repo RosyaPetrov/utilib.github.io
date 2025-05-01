@@ -318,3 +318,38 @@ input:checked + .slider:before {
     vertical-align: middle;
     margin-left: 10px;
 }
+
+.chat-container {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--box-bg);
+    border: 2px solid var(--border);
+}
+
+.chat-message {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px dashed var(--border);
+}
+
+.chat-message small {
+    display: block;
+    color: var(--accent);
+    font-size: 0.8rem;
+}
+
+.chat-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#message-input {
+    flex-grow: 1;
+}
