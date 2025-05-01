@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="crt-effect">
-        <!-- Переключатель темы вверху -->
+        <!-- Переключатель темы -->
         <div class="theme-switch-container retro-border">
             <div class="container">
                 <label class="retro-switch">
@@ -23,7 +23,6 @@
         <header class="retro-border">
             <div class="container">
                 <div class="header-top">
-                    <!-- Аватар сайта с изменяемой темой -->
                     <img src="images/logo-dark.png" alt="Utilib++" id="site-logo" class="site-logo">
                     <div>
                         <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
@@ -33,7 +32,6 @@
                 
                 <nav class="terminal-nav">
                     <button class="retro-btn active" data-page="home">Главная</button>
-                    <button class="retro-btn" data-page="chat">Чат</button>
                     <button class="retro-btn" data-page="docs">Документация</button>
                 </nav>
             </div>
@@ -45,27 +43,13 @@
                 <div class="retro-border">
                     <h2 class="retro-heading">> О ПРОЕКТЕ</h2>
                     <div class="retro-box">
-                        <p>Utilib++ - современная библиотека для C++ разработчиков, предоставляющая:</p>
+                        <p>Utilib++ - мощная библиотека для C++ с такими возможностями:</p>
                         <ul class="retro-list">
-                            <li>Утилиты для работы со строками</li>
-                            <li>Улучшенные контейнеры</li>
-                            <li>Параллельные алгоритмы</li>
+                            <li>Алгоритмы обработки строк</li>
+                            <li>Оптимизированные контейнеры</li>
+                            <li>Параллельные вычисления</li>
                         </ul>
                         <button class="retro-btn install-btn">Установить</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Чат -->
-            <section id="chat-content" class="tab-content">
-                <div class="retro-border">
-                    <h2 class="retro-heading">> ОБЩИЙ ЧАТ</h2>
-                    <div class="chat-container">
-                        <div id="chat-messages" class="chat-messages"></div>
-                        <div class="chat-input">
-                            <input type="text" id="message-input" class="retro-input" placeholder="Введите сообщение...">
-                            <button id="send-btn" class="retro-btn">Отправить</button>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -75,8 +59,10 @@
                 <div class="retro-border">
                     <h2 class="retro-heading">> ДОКУМЕНТАЦИЯ</h2>
                     <div class="retro-box">
-                        <p>Документация доступна на GitHub:</p>
+                        <p>Полная документация доступна по ссылке:</p>
                         <a href="https://github.com/yourusername/Utilib/wiki" class="retro-link">Перейти к документации</a>
+                        <p>Примеры использования:</p>
+                        <a href="https://github.com/yourusername/Utilib/tree/main/examples" class="retro-link">Примеры кода</a>
                     </div>
                 </div>
             </section>
@@ -106,17 +92,9 @@ make install</code></pre>
     </div>
 
     <script>
-        // Конфигурация
-        const CONFIG = {
-            GITHUB_USER: 'Neexzi',
-            REPO_NAME: 'utilib.github.io',
-            CHAT_LABEL: 'global-chat'
-        };
-
         // Состояние приложения
         const state = {
-            currentTheme: 'dark',
-            chatIssueNumber: null
+            currentTheme: 'dark'
         };
 
         // DOM элементы
@@ -125,7 +103,6 @@ make install</code></pre>
             themeLabel: document.querySelector('.theme-label'),
             favicon: document.getElementById('favicon'),
             siteLogo: document.getElementById('site-logo'),
-            contentArea: document.getElementById('content-area'),
             navButtons: document.querySelectorAll('.terminal-nav .retro-btn'),
             modal: document.getElementById('install-modal')
         };
@@ -135,19 +112,14 @@ make install</code></pre>
             initTheme();
             initNavigation();
             initModal();
-            if (location.hash === '#chat') {
-                loadPage('chat');
-            }
         });
 
         // ========== ТЕМА ==========
         function initTheme() {
-            // Загружаем сохраненную тему
             state.currentTheme = localStorage.getItem('theme') || 'dark';
             applyTheme(state.currentTheme);
             elements.themeToggle.checked = state.currentTheme === 'light';
 
-            // Обработчик переключения
             elements.themeToggle.addEventListener('change', function() {
                 state.currentTheme = this.checked ? 'light' : 'dark';
                 applyTheme(state.currentTheme);
@@ -155,14 +127,10 @@ make install</code></pre>
         }
 
         function applyTheme(theme) {
-            // Применяем тему ко всему документу
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-
-            // Обновляем текст переключателя
             elements.themeLabel.textContent = theme === 'dark' ? 'ТЕМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
-
-            // Меняем изображения
+            
             const suffix = theme === 'dark' ? 'dark' : 'light';
             elements.favicon.href = `images/logo-${suffix}.png`;
             elements.siteLogo.src = `images/logo-${suffix}.png`;
@@ -174,55 +142,18 @@ make install</code></pre>
             elements.navButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const page = this.getAttribute('data-page');
-                    loadPage(page);
                     
-                    // Обновляем активную кнопку
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    
+                    document.getElementById(`${page}-content`).style.display = 'block';
+                    
                     elements.navButtons.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                 });
             });
         }
-
-        function loadPage(page) {
-            // Скрываем все страницы
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            
-            // Показываем выбранную
-            document.getElementById(`${page}-content`).style.display = 'block';
-            
-            // Инициализируем чат если нужно
-            if (page === 'chat') initChat();
-        }
-
-        // ========== ЧАТ ==========
-        async function initChat() {
-            try {
-                // Создаем или находим issue для чата
-                const issues = await fetch(
-                    `https://api.github.com/repos/${CONFIG.GITHUB_USER}/${CONFIG.REPO_NAME}/issues?labels=${CONFIG.CHAT_LABEL}`
-                ).then(r => r.json());
-                
-                state.chatIssueNumber = issues.length > 0 
-                    ? issues[0].number 
-                    : await createChatIssue();
-                
-                // Загружаем сообщения
-                await loadMessages();
-                
-                // Настраиваем отправку
-                document.getElementById('send-btn').addEventListener('click', sendMessage);
-                document.getElementById('message-input').addEventListener('keypress', e => {
-                    if (e.key === 'Enter') sendMessage();
-                });
-            } catch (error) {
-                console.error('Ошибка инициализации чата:', error);
-                showChatError();
-            }
-        }
-
-        // ... (остальные функции чата)
 
         // ========== МОДАЛЬНОЕ ОКНО ==========
         function initModal() {
