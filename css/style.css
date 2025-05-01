@@ -335,3 +335,16 @@ body[data-theme="light"] ::-webkit-scrollbar-corner {
 body[data-theme="light"] * {
     scrollbar-color: var(--border-light) var(--box-bg-light);
 }
+
+:root {
+    --bg-dark: #121212;
+    --bg-light: #e0e0e0;
+    --text-dark: #00ff00;
+    --text-light: #333;
+    --accent-dark: #ff00ff;
+    --accent-light: #6e48aa;
+    --border-dark: #00ff00;
+    --border-light: #333;
+    --box-bg-dark: #1e1e1e;
+    --box-bg-light: #f0f0f0;
+}
