@@ -225,3 +225,48 @@ body[data-theme="light"] .modal-content {
         width: 100%;
     }
 }
+
+/* Добавить в конец файла */
+
+/* Состояния для раскрывающихся блоков */
+.retro-box-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.retro-box.expanded {
+    grid-column: 1 / -1;
+}
+
+.retro-box.expanded .retro-list {
+    columns: 2;
+}
+
+@media (max-width: 768px) {
+    .retro-box.expanded .retro-list {
+        columns: 1;
+    }
+}
+
+/* Анимация для модального окна */
+.modal-content {
+    animation: modalopen 0.3s;
+}
+
+@keyframes modalopen {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Активные элементы */
+.retro-btn.active, .retro-tab-btn.active {
+    background: var(--border-dark) !important;
+    color: var(--bg-dark) !important;
+}
+
+body[data-theme="light"] .retro-btn.active,
+body[data-theme="light"] .retro-tab-btn.active {
+    background: var(--border-light) !important;
+    color: var(--bg-light) !important;
+}
