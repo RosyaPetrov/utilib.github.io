@@ -1,3 +1,4 @@
+/* Основные переменные */
 :root {
     --bg-dark: #121212;
     --bg-light: #e0e0e0;
@@ -9,6 +10,24 @@
     --border-light: #333;
     --box-bg-dark: #1e1e1e;
     --box-bg-light: #f0f0f0;
+}
+
+/* Темная тема (по умолчанию) */
+[data-theme="dark"] {
+    --bg: var(--bg-dark);
+    --text: var(--text-dark);
+    --accent: var(--accent-dark);
+    --border: var(--border-dark);
+    --box-bg: var(--box-bg-dark);
+}
+
+/* Светлая тема */
+[data-theme="light"] {
+    --bg: var(--bg-light);
+    --text: var(--text-light);
+    --accent: var(--accent-light);
+    --border: var(--border-light);
+    --box-bg: var(--box-bg-light);
 }
 
 /* CRT эффект */
@@ -24,8 +43,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.25) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background: 
+        linear-gradient(rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
     z-index: 100;
@@ -37,14 +57,9 @@ body {
     line-height: 1.5;
     margin: 0;
     padding: 0;
-    background-color: var(--bg-dark);
-    color: var(--text-dark);
+    background-color: var(--bg);
+    color: var(--text);
     transition: all 0.3s ease;
-}
-
-body[data-theme="light"] {
-    background-color: var(--bg-light);
-    color: var(--text-light);
 }
 
 .container {
@@ -56,48 +71,34 @@ body[data-theme="light"] {
 
 /* Ретро элементы */
 .retro-border {
-    border: 2px solid var(--border-dark);
-    box-shadow: 4px 4px 0 var(--border-dark);
+    border: 2px solid var(--border);
+    box-shadow: 4px 4px 0 var(--border);
     margin-bottom: 20px;
 }
 
-body[data-theme="light"] .retro-border {
-    border-color: var(--border-light);
-    box-shadow: 4px 4px 0 var(--border-light);
-}
-
 .retro-text {
-    color: var(--text-dark);
+    color: var(--text);
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
 }
 
-body[data-theme="light"] .retro-text {
-    color: var(--text-light);
+[data-theme="light"] .retro-text {
     text-shadow: none;
 }
 
 .retro-highlight {
-    color: var(--accent-dark);
-}
-
-body[data-theme="light"] .retro-highlight {
-    color: var(--accent-light);
+    color: var(--accent);
 }
 
 .retro-box {
-    background-color: var(--box-bg-dark);
+    background-color: var(--box-bg);
     padding: 20px;
     margin: 10px 0;
 }
 
-body[data-theme="light"] .retro-box {
-    background-color: var(--box-bg-light);
-}
-
 .retro-btn {
-    background: var(--bg-dark);
-    color: var(--text-dark);
-    border: 2px solid var(--border-dark);
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--border);
     padding: 8px 16px;
     font-family: 'Courier New', monospace;
     font-weight: bold;
@@ -107,13 +108,13 @@ body[data-theme="light"] .retro-box {
 }
 
 .retro-btn:hover {
-    background: var(--border-dark);
-    color: var(--bg-dark);
+    background: var(--border);
+    color: var(--bg);
 }
 
 .retro-btn.active {
-    background: var(--border-dark);
-    color: var(--bg-dark);
+    background: var(--border);
+    color: var(--bg);
 }
 
 /* Анимации */
@@ -155,7 +156,7 @@ body[data-theme="light"] .retro-box {
     bottom: 0;
     background-color: #333;
     transition: .4s;
-    border: 2px solid var(--border-dark);
+    border: 2px solid var(--border);
 }
 
 .slider:before {
@@ -165,7 +166,7 @@ body[data-theme="light"] .retro-box {
     width: 22px;
     left: 4px;
     bottom: 2px;
-    background-color: var(--text-dark);
+    background-color: var(--text);
     transition: .4s;
 }
 
@@ -175,7 +176,7 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(26px);
-    background-color: var(--text-light);
+    background-color: var(--text);
 }
 
 /* Модальное окно */
@@ -191,19 +192,21 @@ input:checked + .slider:before {
 }
 
 .modal-content {
-    background-color: var(--box-bg-dark);
+    background-color: var(--box-bg);
     margin: 5% auto;
     padding: 20px;
     width: 80%;
     max-width: 700px;
+    animation: modalopen 0.3s;
 }
 
-body[data-theme="light"] .modal-content {
-    background-color: var(--box-bg-light);
+@keyframes modalopen {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .close-btn {
-    color: var(--text-dark);
+    color: var(--text);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -211,24 +214,10 @@ body[data-theme="light"] .modal-content {
 }
 
 .close-btn:hover {
-    color: var(--accent-dark);
+    color: var(--accent);
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    .terminal-nav {
-        display: flex;
-        flex-direction: column;
-    }
-    .retro-btn {
-        margin-bottom: 10px;
-        width: 100%;
-    }
-}
-
-/* Добавить в конец файла */
-
-/* Состояния для раскрывающихся блоков */
+/* Раскрывающиеся блоки */
 .retro-box-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -243,127 +232,7 @@ body[data-theme="light"] .modal-content {
     columns: 2;
 }
 
-@media (max-width: 768px) {
-    .retro-box.expanded .retro-list {
-        columns: 1;
-    }
-}
-
-/* Анимация для модального окна */
-.modal-content {
-    animation: modalopen 0.3s;
-}
-
-@keyframes modalopen {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Активные элементы */
-.retro-btn.active, .retro-tab-btn.active {
-    background: var(--border-dark) !important;
-    color: var(--bg-dark) !important;
-}
-
-body[data-theme="light"] .retro-btn.active,
-body[data-theme="light"] .retro-tab-btn.active {
-    background: var(--border-light) !important;
-    color: var(--bg-light) !important;
-}
-
-/* Стили для скроллбара */
-::-webkit-scrollbar {
-    width: 14px;
-    height: 14px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--box-bg-dark);
-    border-left: 2px solid var(--border-dark);
-}
-
-body[data-theme="light"] ::-webkit-scrollbar-track {
-    background: var(--box-bg-light);
-    border-left: 2px solid var(--border-light);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--border-dark);
-    border: 3px solid var(--box-bg-dark);
-    border-radius: 0;
-}
-
-body[data-theme="light"] ::-webkit-scrollbar-thumb {
-    background: var(--border-light);
-    border: 3px solid var(--box-bg-light);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-dark);
-}
-
-body[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-light);
-}
-
-::-webkit-scrollbar-corner {
-    background: var(--box-bg-dark);
-}
-
-body[data-theme="light"] ::-webkit-scrollbar-corner {
-    background: var(--box-bg-light);
-}
-
-/* Анимация скроллбара */
-::-webkit-scrollbar-thumb {
-    transition: background 0.3s ease;
-}
-
-/* Пиксельный эффект для скроллбара */
-::-webkit-scrollbar-thumb {
-    box-shadow: 
-        inset 2px 2px 0 rgba(255,255,255,0.1),
-        inset -2px -2px 0 rgba(0,0,0,0.2);
-}
-
-/* Для Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-dark) var(--box-bg-dark);
-}
-
-body[data-theme="light"] * {
-    scrollbar-color: var(--border-light) var(--box-bg-light);
-}
-
-:root {
-    --bg-dark: #121212;
-    --bg-light: #e0e0e0;
-    --text-dark: #00ff00;
-    --text-light: #333;
-    --accent-dark: #ff00ff;
-    --accent-light: #6e48aa;
-    --border-dark: #00ff00;
-    --border-light: #333;
-    --box-bg-dark: #1e1e1e;
-    --box-bg-light: #f0f0f0;
-}
-
-[data-theme="dark"] {
-    --bg: var(--bg-dark);
-    --text: var(--text-dark);
-    --accent: var(--accent-dark);
-    --border: var(--border-dark);
-    --box-bg: var(--box-bg-dark);
-}
-
-[data-theme="light"] {
-    --bg: var(--bg-light);
-    --text: var(--text-light);
-    --accent: var(--accent-light);
-    --border: var(--border-light);
-    --box-bg: var(--box-bg-light);
-} 
+/* Чат */
 .chat-container {
     background: var(--box-bg);
     padding: 20px;
@@ -389,6 +258,61 @@ body[data-theme="light"] * {
     margin-right: 10px;
 }
 
+/* Скроллбар */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--box-bg);
+    border-left: 2px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border: 3px solid var(--box-bg);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--box-bg);
+}
+
+/* Для Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) var(--box-bg);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .terminal-nav {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .retro-btn {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .retro-box.expanded .retro-list {
+        columns: 1;
+    }
+    
+    .retro-input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Футер и иконка */
 .footer-icon {
     height: 20px;
     vertical-align: middle;
