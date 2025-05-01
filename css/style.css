@@ -270,3 +270,68 @@ body[data-theme="light"] .retro-tab-btn.active {
     background: var(--border-light) !important;
     color: var(--bg-light) !important;
 }
+
+/* Стили для скроллбара */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--box-bg-dark);
+    border-left: 2px solid var(--border-dark);
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-track {
+    background: var(--box-bg-light);
+    border-left: 2px solid var(--border-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-dark);
+    border: 3px solid var(--box-bg-dark);
+    border-radius: 0;
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border: 3px solid var(--box-bg-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-dark);
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-light);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--box-bg-dark);
+}
+
+body[data-theme="light"] ::-webkit-scrollbar-corner {
+    background: var(--box-bg-light);
+}
+
+/* Анимация скроллбара */
+::-webkit-scrollbar-thumb {
+    transition: background 0.3s ease;
+}
+
+/* Пиксельный эффект для скроллбара */
+::-webkit-scrollbar-thumb {
+    box-shadow: 
+        inset 2px 2px 0 rgba(255,255,255,0.1),
+        inset -2px -2px 0 rgba(0,0,0,0.2);
+}
+
+/* Для Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-dark) var(--box-bg-dark);
+}
+
+body[data-theme="light"] * {
+    scrollbar-color: var(--border-light) var(--box-bg-light);
+}
