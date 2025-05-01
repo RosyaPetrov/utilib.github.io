@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utilib++</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/script.js" defer></script>
+    <link rel="icon" href="images/icond.png" type="image/png">
 </head>
 <body>
     <div class="crt-effect">
@@ -21,114 +21,25 @@
                         <span class="theme-label">DARK</span>
                     </div>
                 </div>
-                <p class="retro-subtitle">// C++ UTILITY LIBRARY</p>
-                <div class="terminal-nav">
-                    <button class="retro-btn active" data-tab="about">О библиотеке</button>
-                    <button class="retro-btn" data-tab="features">Функции</button>
-                    <button class="retro-btn" data-tab="examples">Примеры</button>
-                </div>
+                <nav class="terminal-nav">
+                    <button class="retro-btn active" data-page="home">Главная</button>
+                    <button class="retro-btn" data-page="chat">Чат</button>
+                    <button class="retro-btn" data-page="docs">Документация</button>
+                </nav>
             </div>
         </header>
 
-        <main class="container">
-            <section id="about" class="tab-content active retro-border">
-                <h2 class="retro-heading">> ОБЗОР</h2>
-                <div class="retro-box">
-                    <p class="retro-text">Utilib++ — это коллекция полезных инструментов для C++ разработчиков.</p>
-                    <p class="retro-text">Версия: <span class="retro-highlight">1.0.0</span></p>
-                    <p class="retro-text">Лицензия: <span class="retro-highlight">MIT</span></p>
-                    <div class="retro-code">
-                        <pre><code class="language-cpp">#include "utilib/string_utils.hpp"
-
-int main() {
-    std::string s = "hello";
-    std::cout << utl::to_upper(s); // HELLO
-    return 0;
-}</code></pre>
-                    </div>
-                    <button class="retro-btn install-btn">Установить</button>
-                </div>
-            </section>
-
-            <section id="features" class="tab-content retro-border">
-                <h2 class="retro-heading">> ФУНКЦИИ</h2>
-                <div class="retro-box-grid">
-                    <div class="retro-box" onclick="this.classList.toggle('expanded')">
-                        <h3 class="retro-highlight">string_utils.hpp</h3>
-                        <ul class="retro-list">
-                            <li>to_upper/to_lower</li>
-                            <li>trim/ltrim/rtrim</li>
-                            <li>split/join</li>
-                            <li>starts_with/ends_with</li>
-                        </ul>
-                    </div>
-                    <div class="retro-box" onclick="this.classList.toggle('expanded')">
-                        <h3 class="retro-highlight">file_utils.hpp</h3>
-                        <ul class="retro-list">
-                            <li>read_file</li>
-                            <li>write_file</li>
-                            <li>file_exists</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="examples" class="tab-content retro-border">
-                <h2 class="retro-heading">> ПРИМЕРЫ</h2>
-                <div class="retro-box">
-                    <div class="retro-tabs">
-                        <button class="retro-tab-btn active" data-example="string">Строки</button>
-                        <button class="retro-tab-btn" data-example="file">Файлы</button>
-                    </div>
-                    <div id="string-example" class="example-content">
-                        <pre><code class="language-cpp">#include "utilib/string_utils.hpp"
-#include <iostream>
-
-int main() {
-    std::string s = "  hello world  ";
-    std::cout << utl::trim(s); // "hello world"
-    return 0;
-}</code></pre>
-                    </div>
-                    <div id="file-example" class="example-content" style="display:none">
-                        <pre><code class="language-cpp">#include "utilib/file_utils.hpp"
-#include <iostream>
-
-int main() {
-    if (utl::file_exists("data.txt")) {
-        auto content = utl::read_file("data.txt");
-        std::cout << content;
-    }
-    return 0;
-}</code></pre>
-                    </div>
-                </div>
-            </section>
+        <main class="container" id="content-area">
+            <!-- Контент будет загружаться динамически -->
         </main>
 
         <footer class="retro-border">
             <div class="container">
-                <p class="retro-text">(c) 2023 UTILIB++</p>
-                <p class="retro-text">GitHub: <a href="https://github.com/Neexzi/Utilib" class="retro-link">github.com/Neexzi/Utilib</a></p>
+                <p class="retro-text">© 2023 Utilib Project | <img src="images/icond.png" alt="icon" class="footer-icon"></p>
             </div>
         </footer>
     </div>
 
-    <div class="modal" id="install-modal">
-        <div class="modal-content retro-border">
-            <span class="close-btn">&times;</span>
-            <h2 class="retro-heading">> УСТАНОВКА</h2>
-            <div class="retro-box">
-                <h3 class="retro-highlight">CMake:</h3>
-                <pre><code class="language-bash">git clone https://github.com/Neexzi/Utilib.git
-cd Utilib
-mkdir build && cd build
-cmake ..
-make install</code></pre>
-                <h3 class="retro-highlight">Вручную:</h3>
-                <p class="retro-text">Просто скопируйте файлы из include/ в ваш проект</p>
-            </div>
-        </div>
-    </div>
+    <script src="js/script.js"></script>
 </body>
 </html>
