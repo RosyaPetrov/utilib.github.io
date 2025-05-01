@@ -348,3 +348,49 @@ body[data-theme="light"] * {
     --box-bg-dark: #1e1e1e;
     --box-bg-light: #f0f0f0;
 }
+
+[data-theme="dark"] {
+    --bg: var(--bg-dark);
+    --text: var(--text-dark);
+    --accent: var(--accent-dark);
+    --border: var(--border-dark);
+    --box-bg: var(--box-bg-dark);
+}
+
+[data-theme="light"] {
+    --bg: var(--bg-light);
+    --text: var(--text-light);
+    --accent: var(--accent-light);
+    --border: var(--border-light);
+    --box-bg: var(--box-bg-light);
+} 
+.chat-container {
+    background: var(--box-bg);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+}
+
+.retro-input {
+    background: var(--box-bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 8px;
+    font-family: 'Courier New', monospace;
+    width: 70%;
+    margin-right: 10px;
+}
+
+.footer-icon {
+    height: 20px;
+    vertical-align: middle;
+    margin-left: 10px;
+}
