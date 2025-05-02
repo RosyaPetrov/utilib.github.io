@@ -7,19 +7,18 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="images/icon-dark.png" id="favicon">
     <style>
-        /* Только стили для иконки в футере */
+        
         .footer-logo {
             height: 1em;
             vertical-align: middle;
             margin-left: 5px;
         }
         
-        /* Скрываем все вкладки по умолчанию */
         .tab-content {
             display: none;
         }
         
-        /* Показываем только активную вкладку */
+        
         .tab-content.active {
             display: block;
         }
@@ -27,7 +26,7 @@
 </head>
 <body>
     <div class="crt-effect">
-        <!-- Переключатель темы -->
+        
         <div class="theme-switch-container retro-border">
             <div class="container">
                 <label class="retro-switch">
@@ -73,7 +72,7 @@
                 </div>
             </section>
 
-            <!-- Документация -->
+            
             <section id="docs-content" class="tab-content">
                 <div class="retro-border">
                     <h2 class="retro-heading">> ДОКУМЕНТАЦИЯ</h2>
@@ -94,7 +93,7 @@
         </footer>
     </div>
 
-    <!-- Модальное окно установки -->
+    
     <div class="modal" id="install-modal">
         <div class="modal-content retro-border">
             <span class="close-btn">&times;</span>
@@ -111,7 +110,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Элементы управления
+            
             const themeToggle = document.getElementById('theme-toggle');
             const themeLabel = document.querySelector('.theme-label');
             const favicon = document.getElementById('favicon');
@@ -123,7 +122,7 @@
             const installBtn = document.querySelector('.install-btn');
             const closeBtn = document.querySelector('.close-btn');
 
-            // Инициализация темы
+            
             function initTheme() {
                 const savedTheme = localStorage.getItem('theme') || 'dark';
                 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -132,12 +131,12 @@
                 updateIcons(savedTheme);
             }
 
-            // Обновление текста темы
+            
             function updateThemeText(theme) {
                 themeLabel.textContent = theme === 'dark' ? 'ТЕМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
             }
 
-            // Обновление иконок
+            
             function updateIcons(theme) {
                 const suffix = theme === 'dark' ? 'dark' : 'light';
                 favicon.href = `images/icon-${suffix}.png`;
@@ -145,7 +144,7 @@
                 footerLogo.src = `images/icon-${suffix}.png`;
             }
 
-            // Переключение темы
+            
             themeToggle.addEventListener('change', function() {
                 const newTheme = this.checked ? 'light' : 'dark';
                 document.documentElement.setAttribute('data-theme', newTheme);
@@ -154,38 +153,36 @@
                 updateIcons(newTheme);
             });
 
-            // Навигация по вкладкам
             function setupNavigation() {
-                // Сначала скрываем все вкладки
                 tabContents.forEach(content => {
                     content.classList.remove('active');
                 });
                 
-                // Показываем только главную страницу
+            
                 document.getElementById('home-content').classList.add('active');
                 
-                // Обработчики для кнопок навигации
+                
                 navButtons.forEach(button => {
                     button.addEventListener('click', function() {
-                        // Удаляем активный класс у всех кнопок
+                        
                         navButtons.forEach(btn => btn.classList.remove('active'));
                         
-                        // Добавляем активный класс текущей кнопке
+                        
                         this.classList.add('active');
                         
-                        // Скрываем все вкладки
+                        
                         tabContents.forEach(content => {
                             content.classList.remove('active');
                         });
                         
-                        // Показываем выбранную вкладку
+                        
                         const page = this.getAttribute('data-page');
                         document.getElementById(`${page}-content`).classList.add('active');
                     });
                 });
             }
 
-            // Управление модальным окном
+            
             function setupModal() {
                 if (installBtn) {
                     installBtn.addEventListener('click', () => {
@@ -206,7 +203,6 @@
                 });
             }
 
-            // Инициализация
             initTheme();
             setupNavigation();
             setupModal();
