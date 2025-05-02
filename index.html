@@ -6,6 +6,44 @@
     <title>Utilib++</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="images/icon-dark.png" id="favicon">
+    <style>
+        /* Добавим базовые стили для демонстрации */
+        .footer-logo {
+            height: 1em;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        .modal-content {
+            background-color: #222;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="crt-effect">
@@ -104,7 +142,8 @@ make install</code></pre>
             favicon: document.getElementById('favicon'),
             siteLogo: document.getElementById('site-logo'),
             navButtons: document.querySelectorAll('.terminal-nav .retro-btn'),
-            modal: document.getElementById('install-modal')
+            modal: document.getElementById('install-modal'),
+            footerLogo: document.querySelector('.footer-logo')
         };
 
         // Инициализация при загрузке
@@ -116,10 +155,16 @@ make install</code></pre>
 
         // ========== ТЕМА ==========
         function initTheme() {
+            // Проверяем сохраненную тему или используем темную по умолчанию
             state.currentTheme = localStorage.getItem('theme') || 'dark';
+            
+            // Применяем тему
             applyTheme(state.currentTheme);
+            
+            // Устанавливаем состояние переключателя
             elements.themeToggle.checked = state.currentTheme === 'light';
 
+            // Обработчик изменения темы
             elements.themeToggle.addEventListener('change', function() {
                 state.currentTheme = this.checked ? 'light' : 'dark';
                 applyTheme(state.currentTheme);
@@ -127,14 +172,20 @@ make install</code></pre>
         }
 
         function applyTheme(theme) {
+            // Устанавливаем атрибут темы для корневого элемента
             document.documentElement.setAttribute('data-theme', theme);
+            
+            // Сохраняем тему в localStorage
             localStorage.setItem('theme', theme);
+            
+            // Обновляем текст метки
             elements.themeLabel.textContent = theme === 'dark' ? 'ТЕМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
             
+            // Обновляем иконки
             const suffix = theme === 'dark' ? 'dark' : 'light';
             elements.favicon.href = `images/icon-${suffix}.png`;
             elements.siteLogo.src = `images/icon-${suffix}.png`;
-            document.querySelector('.footer-icon').src = `images/icon-${suffix}.png`;
+            elements.footerLogo.src = `images/icon-${suffix}.png`;
         }
 
         // ========== НАВИГАЦИЯ ==========
@@ -143,12 +194,15 @@ make install</code></pre>
                 btn.addEventListener('click', function() {
                     const page = this.getAttribute('data-page');
                     
+                    // Скрываем все вкладки
                     document.querySelectorAll('.tab-content').forEach(content => {
-                        content.style.display = 'none';
+                        content.classList.remove('active');
                     });
                     
-                    document.getElementById(`${page}-content`).style.display = 'block';
+                    // Показываем выбранную вкладку
+                    document.getElementById(`${page}-content`).classList.add('active');
                     
+                    // Обновляем активные кнопки
                     elements.navButtons.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                 });
@@ -168,7 +222,7 @@ make install</code></pre>
             
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => {
-                    elements.modal.style.display = 'none';
+                    elements.moя dal.style.display = 'none';
                 });
             }
             
