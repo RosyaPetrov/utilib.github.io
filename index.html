@@ -13,6 +13,16 @@
             vertical-align: middle;
             margin-left: 5px;
         }
+        
+        /* Скрываем все вкладки по умолчанию */
+        .tab-content {
+            display: none;
+        }
+        
+        /* Показываем только активную вкладку */
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -100,7 +110,6 @@ make install</code></pre>
     </div>
 
     <script>
-        // Ждем полной загрузки DOM
         document.addEventListener('DOMContentLoaded', function() {
             // Элементы управления
             const themeToggle = document.getElementById('theme-toggle');
@@ -146,42 +155,61 @@ make install</code></pre>
             });
 
             // Навигация по вкладкам
-            navButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Удаляем активный класс у всех кнопок и вкладок
-                    navButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-
-                    // Добавляем активный класс текущей кнопке
-                    this.classList.add('active');
-
-                    // Показываем соответствующую вкладку
-                    const page = this.getAttribute('data-page');
-                    document.getElementById(`${page}-content`).classList.add('active');
+            function setupNavigation() {
+                // Сначала скрываем все вкладки
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
                 });
-            });
+                
+                // Показываем только главную страницу
+                document.getElementById('home-content').classList.add('active');
+                
+                // Обработчики для кнопок навигации
+                navButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Удаляем активный класс у всех кнопок
+                        navButtons.forEach(btn => btn.classList.remove('active'));
+                        
+                        // Добавляем активный класс текущей кнопке
+                        this.classList.add('active');
+                        
+                        // Скрываем все вкладки
+                        tabContents.forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Показываем выбранную вкладку
+                        const page = this.getAttribute('data-page');
+                        document.getElementById(`${page}-content`).classList.add('active');
+                    });
+                });
+            }
 
             // Управление модальным окном
-            if (installBtn) {
-                installBtn.addEventListener('click', () => {
-                    modal.style.display = 'block';
-                });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                });
-            }
-
-            window.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
+            function setupModal() {
+                if (installBtn) {
+                    installBtn.addEventListener('click', () => {
+                        modal.style.display = 'block';
+                    });
                 }
-            });
 
-            // Инициализируем тему при загрузке
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        modal.style.display = 'none';
+                    });
+                }
+
+                window.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+
+            // Инициализация
             initTheme();
+            setupNavigation();
+            setupModal();
         });
     </script>
 </body>
