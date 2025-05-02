@@ -7,41 +7,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="images/icon-dark.png" id="favicon">
     <style>
-        /* Добавим базовые стили для демонстрации */
+        /* Только стили для иконки в футере */
         .footer-logo {
             height: 1em;
             vertical-align: middle;
             margin-left: 5px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-        }
-        .modal-content {
-            background-color: #222;
-            margin: 15% auto;
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
         }
     </style>
 </head>
@@ -130,108 +100,89 @@ make install</code></pre>
     </div>
 
     <script>
-        // Состояние приложения
-        const state = {
-            currentTheme: 'dark'
-        };
-
-        // DOM элементы
-        const elements = {
-            themeToggle: document.getElementById('theme-toggle'),
-            themeLabel: document.querySelector('.theme-label'),
-            favicon: document.getElementById('favicon'),
-            siteLogo: document.getElementById('site-logo'),
-            navButtons: document.querySelectorAll('.terminal-nav .retro-btn'),
-            modal: document.getElementById('install-modal'),
-            footerLogo: document.querySelector('.footer-logo')
-        };
-
-        // Инициализация при загрузке
+        // Ждем полной загрузки DOM
         document.addEventListener('DOMContentLoaded', function() {
-            initTheme();
-            initNavigation();
-            initModal();
-        });
-
-        // ========== ТЕМА ==========
-        function initTheme() {
-            // Проверяем сохраненную тему или используем темную по умолчанию
-            state.currentTheme = localStorage.getItem('theme') || 'dark';
-            
-            // Применяем тему
-            applyTheme(state.currentTheme);
-            
-            // Устанавливаем состояние переключателя
-            elements.themeToggle.checked = state.currentTheme === 'light';
-
-            // Обработчик изменения темы
-            elements.themeToggle.addEventListener('change', function() {
-                state.currentTheme = this.checked ? 'light' : 'dark';
-                applyTheme(state.currentTheme);
-            });
-        }
-
-        function applyTheme(theme) {
-            // Устанавливаем атрибут темы для корневого элемента
-            document.documentElement.setAttribute('data-theme', theme);
-            
-            // Сохраняем тему в localStorage
-            localStorage.setItem('theme', theme);
-            
-            // Обновляем текст метки
-            elements.themeLabel.textContent = theme === 'dark' ? 'ТЕМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
-            
-            // Обновляем иконки
-            const suffix = theme === 'dark' ? 'dark' : 'light';
-            elements.favicon.href = `images/icon-${suffix}.png`;
-            elements.siteLogo.src = `images/icon-${suffix}.png`;
-            elements.footerLogo.src = `images/icon-${suffix}.png`;
-        }
-
-        // ========== НАВИГАЦИЯ ==========
-        function initNavigation() {
-            elements.navButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const page = this.getAttribute('data-page');
-                    
-                    // Скрываем все вкладки
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    
-                    // Показываем выбранную вкладку
-                    document.getElementById(`${page}-content`).classList.add('active');
-                    
-                    // Обновляем активные кнопки
-                    elements.navButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-        }
-
-        // ========== МОДАЛЬНОЕ ОКНО ==========
-        function initModal() {
+            // Элементы управления
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeLabel = document.querySelector('.theme-label');
+            const favicon = document.getElementById('favicon');
+            const siteLogo = document.getElementById('site-logo');
+            const footerLogo = document.querySelector('.footer-logo');
+            const navButtons = document.querySelectorAll('.terminal-nav .retro-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const modal = document.getElementById('install-modal');
             const installBtn = document.querySelector('.install-btn');
             const closeBtn = document.querySelector('.close-btn');
-            
+
+            // Инициализация темы
+            function initTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeToggle.checked = savedTheme === 'light';
+                updateThemeText(savedTheme);
+                updateIcons(savedTheme);
+            }
+
+            // Обновление текста темы
+            function updateThemeText(theme) {
+                themeLabel.textContent = theme === 'dark' ? 'ТЕМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
+            }
+
+            // Обновление иконок
+            function updateIcons(theme) {
+                const suffix = theme === 'dark' ? 'dark' : 'light';
+                favicon.href = `images/icon-${suffix}.png`;
+                siteLogo.src = `images/icon-${suffix}.png`;
+                footerLogo.src = `images/icon-${suffix}.png`;
+            }
+
+            // Переключение темы
+            themeToggle.addEventListener('change', function() {
+                const newTheme = this.checked ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeText(newTheme);
+                updateIcons(newTheme);
+            });
+
+            // Навигация по вкладкам
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Удаляем активный класс у всех кнопок и вкладок
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Добавляем активный класс текущей кнопке
+                    this.classList.add('active');
+
+                    // Показываем соответствующую вкладку
+                    const page = this.getAttribute('data-page');
+                    document.getElementById(`${page}-content`).classList.add('active');
+                });
+            });
+
+            // Управление модальным окном
             if (installBtn) {
                 installBtn.addEventListener('click', () => {
-                    elements.modal.style.display = 'block';
+                    modal.style.display = 'block';
                 });
             }
-            
+
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => {
-                    elements.moя dal.style.display = 'none';
+                    modal.style.display = 'none';
                 });
             }
-            
+
             window.addEventListener('click', (e) => {
-                if (e.target === elements.modal) {
-                    elements.modal.style.display = 'none';
+                if (e.target === modal) {
+                    modal.style.display = 'none';
                 }
             });
-        }
+
+            // Инициализируем тему при загрузке
+            initTheme();
+        });
     </script>
 </body>
 </html>
