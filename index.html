@@ -84,10 +84,6 @@
             margin-bottom: 20px;
         }
 
-        .retro-text {
-            color: var(--text);
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
-        }
 
         [data-theme="light"] .retro-text {
             text-shadow: none;
@@ -103,6 +99,32 @@
             margin: 10px 0;
         }
 
+               .header-top {
+            display: flex;
+            align-items: center;
+            gap: 15px; 
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .site-logo {
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .retro-text {
+            margin: 0; 
+            line-height: 1;
+        }
+
+        .retro-subtitle {
+            margin: 0; /* Убираем отступы у подзаголовка */
+        }
+        
         .retro-btn {
             background: var(--bg);
             color: var(--text);
@@ -451,7 +473,6 @@
 </head>
 <body>
     <div class="crt-effect">
-        
         <div class="theme-switch-container retro-border">
             <div class="container">
                 <label class="retro-switch">
@@ -462,23 +483,22 @@
             </div>
         </div>
 
-        <header class="retro-border">
-            <div class="container">
-                <div class="header-top">
-                    <img src="images/icon-dark.png" alt="Utilib++" id="site-logo" class="site-logo">
-                    <div>
-                       <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
-                        <p class="retro-subtitle">// C++ Utility Library</p>
-                    </div>
+          <header class="retro-border">
+        <div class="container">
+            <div class="header-top">
+                <img src="images/icon-dark.png" alt="Utilib++" id="site-logo" class="site-logo">
+                <div class="header-text">
+                    <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
+                    <p class="retro-subtitle">// C++ Utility Library</p>
                 </div>
-                
-                <nav class="terminal-nav">
-                    <button class="retro-btn active" data-page="home">Главная</button>
-                    <button class="retro-btn" data-page="docs">Документация</button>
-                </nav>
             </div>
-        </header>
-
+            
+            <nav class="terminal-nav">
+                <button class="retro-btn active" data-page="home">Главная</button>
+                <button class="retro-btn" data-page="docs">Документация</button>
+            </nav>
+        </div>
+    </header>
         <main class="container" id="content-area">
             <!-- Главная страница -->
             <section id="home-content" class="tab-content active">
