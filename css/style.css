@@ -401,3 +401,18 @@ input:checked + .slider:before {
 [data-theme="light"] .retro-link:hover {
     color: #00bb00;
 }
+
+        .footer-logo {
+            height: 1em;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        
+        .tab-content.active {
+            display: block;
+        }
