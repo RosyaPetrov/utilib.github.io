@@ -9,20 +9,25 @@
     <style>
         body {
             overflow-x: hidden;
-            word-wrap: break-word;
+            text-rendering: optimizeLegibility;
         }
         
         .retro-box, .retro-list, .retro-border, .terminal-nav, .tab-content {
-            word-break: break-word;
+            word-wrap: break-word;
             overflow-wrap: break-word;
-            hyphens: auto;
+            white-space: normal;
         }
         
         pre, code {
             white-space: pre-wrap;
-            word-wrap: break-word;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
         
+        .blink, .retro-heading, .retro-text, .retro-subtitle {
+            white-space: nowrap;
+        }
+
         .container {
             max-width: 100%;
             padding: 0 15px;
@@ -42,6 +47,17 @@
             .retro-btn {
                 width: 100%;
                 margin-bottom: 5px;
+            }
+            
+            p, li, span:not(.blink) {
+                word-break: break-word;
+                overflow-wrap: break-word;
+                hyphens: manual;
+            }
+
+            .no-break-after {
+                display: inline-block;
+                margin-right: -0.25em;
             }
         }
     </style>
