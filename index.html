@@ -6,6 +6,40 @@
     <title>Utilib++</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="images/icon-dark.png" id="favicon">
+    <style>
+        /* Добавляем стили для мобильной адаптации */
+        .header-top {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .header-text {
+            flex: 1;
+            min-width: 200px; /* Минимальная ширина для текста */
+        }
+        
+        .site-logo {
+            flex-shrink: 0; /* Запрещаем сжатие логотипа */
+        }
+        
+        .terminal-nav {
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-text {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="crt-effect">
@@ -24,7 +58,7 @@
             <div class="container">
                 <div class="header-top">
                     <img src="images/icon-dark.png" alt="Utilib++" id="site-logo" class="site-logo">
-                    <div>
+                    <div class="header-text">
                         <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
                         <p class="retro-subtitle">// C++ Utility Library</p>
                     </div>
