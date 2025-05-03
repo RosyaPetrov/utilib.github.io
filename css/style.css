@@ -402,17 +402,16 @@ input:checked + .slider:before {
     color: #00bb00;
 }
 
-        .footer-logo {
-            height: 1em;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
+.footer-logo {
+    height: 1em;
+    vertical-align: middle;
+     margin-left: 5px;
+}
         
-        .tab-content {
-            display: none;
-        }
-        
-        
-        .tab-content.active {
-            display: block;
-        }
+.tab-content {
+    display: none;
+}
+           
+.tab-content.active {
+  display: block;
+}
