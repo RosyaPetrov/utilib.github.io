@@ -87,10 +87,17 @@
         .retro-text {
             color: var(--text);
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+            margin: 0;
+            line-height: 1;
         }
 
         [data-theme="light"] .retro-text {
             text-shadow: none;
+        }
+
+        .retro-subtitle {
+            margin: 0;
+            color: var(--text);
         }
 
         .retro-highlight {
@@ -113,6 +120,7 @@
             cursor: pointer;
             transition: all 0.2s;
             margin-right: 10px;
+            margin-top: 15px; /* Добавлен отступ сверху */
         }
 
         .retro-btn:hover {
@@ -128,6 +136,9 @@
         /* Анимации */
         .blink {
             animation: blink 1s infinite;
+            display: inline-block;
+            width: 10px;
+            text-align: left;
         }
 
         @keyframes blink {
@@ -370,6 +381,7 @@
             padding: 10px 20px;
             background: var(--box-bg);
             border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
         }
 
         .theme-switch-container .theme-label {
@@ -381,14 +393,22 @@
         /* Стили для логотипа */
         .site-logo {
             height: 50px;
-            margin-right: 15px;
             transition: all 0.3s ease;
         }
 
         .header-top {
             display: flex;
             align-items: center;
+            gap: 15px;
+            padding-bottom: 10px; /* Добавляем отступ снизу */
         }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
         /* Стили для ссылок */
         .retro-link {
             color: var(--accent);
@@ -432,6 +452,11 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+
+        /* Стили для навигации */
+        .terminal-nav {
+            margin-top: 15px; /* Добавляем отступ сверху */
+        }
     </style>
 </head>
 <body>
@@ -451,7 +476,7 @@
             <div class="container">
                 <div class="header-top">
                     <img src="images/icon-dark.png" alt="Utilib++" id="site-logo" class="site-logo">
-                    <div>
+                    <div class="header-text">
                         <h1 class="retro-text">> Utilib<span class="blink">_</span></h1>
                         <p class="retro-subtitle">// C++ Utility Library</p>
                     </div>
