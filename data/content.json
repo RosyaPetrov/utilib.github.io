@@ -1,4 +1,0 @@
-{
-    "home": "<section class='retro-border'><h2 class='retro-heading'>О ПРОЕКТЕ</h2><div class='retro-box'><p>Utilib++ — это мощная библиотека для C++ разработчиков.</p><button class='retro-btn install-btn'>Установить</button></div></section>",
-    "docs": "<section class='retro-border'><h2 class='retro-heading'>ДОКУМЕНТАЦИЯ</h2><div class='retro-box'><p>Здесь будет документация по библиотеке.</p></div></section>"
-}
